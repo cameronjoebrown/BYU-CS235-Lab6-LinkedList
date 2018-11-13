@@ -18,6 +18,10 @@ using namespace std;
 template<typename T>
 class LinkedList : public LinkedListInterface <T> {
 public:
+    struct Node {
+        T value;
+        Node* next;
+    };
     LinkedList() {
         head = nullptr;
         tail = nullptr;
@@ -29,21 +33,28 @@ public:
     void insertHead(T value) {
         
     }
-    void insertTail(T value);
+    void insertTail(T value) {
+        
+    }
     void insertAfter(T value, T insertionNode);
     void remove(T value);
     void clear();
     T at(int index);
     int size();
     string toString();
+    Node* find(T value) {
+        Node* temp;
+        for(temp = head; temp != nullptr; temp=temp->next){
+            if(temp->value == value) {
+                return temp;
+            }
+            return nullptr;
+        }
+    }
 protected:
     
     
 private:
-    struct Node {
-        T value;
-        Node* next;
-    };
     Node* head;
     Node* tail;
     int listSize;
