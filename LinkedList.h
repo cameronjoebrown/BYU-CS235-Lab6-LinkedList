@@ -11,7 +11,6 @@
 
 #include <stdio.h>
 #include "LinkedListInterface.h"
-//#include <stdexcept>
 
 using namespace std;
 
@@ -31,7 +30,22 @@ public:
         clear();
     }
     void insertHead(T value) {
-        
+        if(checkForDuplicate(value)) {
+            return;
+        }
+        else if(head == nullptr){
+            Node* newHead = new Node();
+            newHead->data = value;
+            head = newHead;
+            listSize++;
+            
+        }
+        else {
+            Node* newHead = new Node();
+            newHead->next = head;
+            head = newHead;
+            listSize++;
+        }
     }
     void insertTail(T value) {
         
@@ -42,14 +56,14 @@ public:
     T at(int index);
     int size();
     string toString();
-    Node* find(T value) {
+    bool checkForDuplicate(T value) {
         Node* temp;
         for(temp = head; temp != nullptr; temp=temp->next){
             if(temp->value == value) {
-                return temp;
+                return true;
             }
-            return nullptr;
         }
+        return false;
     }
 protected:
     
