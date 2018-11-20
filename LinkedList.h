@@ -69,13 +69,33 @@ public:
         else if(checkForDuplicate(insertionNode->value) == false){
             return;
         }
+        else {
+            Node* newNode = new Node();
+            newNode->value = value;
+            newNode->next = insertionNode->next;
+            insertionNode->next = newNode;
+            listSize++;
+        }
 
     }
-    void remove(T value);
-    void clear();
-    T at(int index);
-    int size();
-    string toString();
+    void remove(T value) {
+        
+    }
+    void clear() {
+        
+    }
+    T at(int index) {
+        
+        
+    }
+    int size() {
+        
+        return 0;
+    }
+    string toString() {
+        
+        return "";
+    }
     bool checkForDuplicate(T value) {
         Node* temp;
         for(temp = head; temp != nullptr; temp=temp->next){
