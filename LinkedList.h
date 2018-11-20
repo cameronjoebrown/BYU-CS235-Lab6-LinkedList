@@ -10,6 +10,7 @@
 #define LinkedList_h
 
 #include <stdio.h>
+#include <iostream>
 #include "LinkedListInterface.h"
 
 using namespace std;
@@ -35,22 +36,41 @@ public:
         }
         else if(head == nullptr){
             Node* newHead = new Node();
-            newHead->data = value;
+            newHead->value = value;
             head = newHead;
             listSize++;
             
         }
         else {
             Node* newHead = new Node();
+            newHead->value = value;
             newHead->next = head;
             head = newHead;
             listSize++;
         }
     }
     void insertTail(T value) {
-        
+        if(checkForDuplicate(value)) {
+            return;
+        }
+        else {
+            Node* newTail = new Node();
+            newTail->value = value;
+            newTail->next = nullptr;
+            tail->next = newTail;
+            tail = newTail;
+            listSize++;
+        }
     }
-    void insertAfter(T value, T insertionNode);
+    void insertAfter(T value, T insertionNode) {
+        if(checkForDuplicate(value)) {
+            return;
+        }
+        else if(checkForDuplicate(insertionNode->value) == false){
+            return;
+        }
+
+    }
     void remove(T value);
     void clear();
     T at(int index);
