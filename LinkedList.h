@@ -66,14 +66,15 @@ public:
         if(checkForDuplicate(value)) {
             return;
         }
-        else if(checkForDuplicate(insertionNode->value) == false){
+        else if(checkForDuplicate(insertionNode) == false){
             return;
         }
         else {
             Node* newNode = new Node();
+            Node* insertion = new Node();
             newNode->value = value;
             newNode->next = insertionNode->next;
-            insertionNode->next = newNode;
+            insertion->next = newNode;
             listSize++;
         }
 
