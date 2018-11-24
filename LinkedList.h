@@ -32,7 +32,7 @@ public:
     }
     void insertHead(T value) {
         if(checkForDuplicate(value)) {
-            return;
+            
         }
         else if(head == nullptr){
             Node* newHead = new Node();
@@ -50,32 +50,41 @@ public:
         }
     }
     void insertTail(T value) {
-        if(checkForDuplicate(value)) {
-            return;
+        if(head == nullptr){
+            insertHead(value);
+        }
+        else if(checkForDuplicate(value)) {
+            
         }
         else {
+            currentIndex = head;
+            while (currentIndex->next != NULL) {
+                currentIndex = currentIndex->next;
+            }
             Node* newTail = new Node();
             newTail->value = value;
             newTail->next = nullptr;
-            tail->next = newTail;
+            currentIndex->next = newTail;
             tail = newTail;
             listSize++;
         }
     }
     void insertAfter(T value, T insertionNode) {
         if(checkForDuplicate(value)) {
-            return;
-        }
-        else if(checkForDuplicate(insertionNode) == false){
-            return;
+            
         }
         else {
-            Node* newNode = new Node();
-            Node* insertion = new Node();
-            newNode->value = value;
-            newNode->next = insertionNode->next;
-            insertion->next = newNode;
-            listSize++;
+            currentIndex = head;
+            while (currentIndex != NULL) {
+                if (currentIndex->value == insertionNode) {
+                    Node* newNode = new Node();
+                    newNode->value = value;
+                    newNode->next = currentIndex->next;
+                    currentIndex->next = newNode;
+                    break;
+                }
+                currentIndex = currentIndex->next;
+            }
         }
 
     }
@@ -88,24 +97,23 @@ public:
     T at(int index) {
         T value;
         return value;
-        
     }
     int size() {
-        
-        return 0;
+        return listSize;
     }
     string toString() {
         
         return "";
     }
     bool checkForDuplicate(T value) {
-        Node* temp;
-        for(temp = head; temp != nullptr; temp=temp->next){
-            if(temp->value == value) {
-                return true;
+            currentIndex = head;
+            while (currentIndex != NULL) {
+                if (currentIndex->value == value) {
+                    return true;
+                }
+                currentIndex = currentIndex->next;
             }
-        }
-        return false;
+            return false;
     }
 protected:
     
@@ -113,6 +121,7 @@ protected:
 private:
     Node* head;
     Node* tail;
+    Node* currentIndex;
     int listSize;
 };
 
