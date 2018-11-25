@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <sstream>
 #include "LinkedListInterface.h"
 
 using namespace std;
@@ -25,7 +26,6 @@ public:
     LinkedList() {
         head = nullptr;
         tail = nullptr;
-        listSize = 0;
     }
     ~LinkedList() {
         clear();
@@ -38,7 +38,6 @@ public:
             Node* newHead = new Node();
             newHead->value = value;
             head = newHead;
-            listSize++;
             
         }
         else {
@@ -46,7 +45,6 @@ public:
             newHead->value = value;
             newHead->next = head;
             head = newHead;
-            listSize++;
         }
     }
     void insertTail(T value) {
@@ -66,7 +64,6 @@ public:
             newTail->next = nullptr;
             currentIndex->next = newTail;
             tail = newTail;
-            listSize++;
         }
     }
     void insertAfter(T value, T insertionNode) {
@@ -89,21 +86,108 @@ public:
 
     }
     void remove(T value) {
+        if(checkForDuplicate(value)){
+            currentIndex = head;
+            Node* temp;
+            while (currentIndex->value != value) {
+                temp = currentIndex;
+                currentIndex = currentIndex->next;
+            }
+            if(currentIndex == head) {
+                head = currentIndex->next;
+                delete currentIndex;
+                if(size()==0) {
+                    head = NULL;
+                    tail = NULL;
+                }
+                return;
+            }
+            else if(currentIndex == tail) {
+                tail = temp;
+                temp->next=NULL;
+                delete currentIndex;
+                if(size() == 0) {
+                    head = NULL;
+                    tail = NULL;
+                }
+                return;
+            }
+            else {
+                temp->next = currentIndex->next;
+                delete currentIndex;
+                if(size()==0){
+                    head = NULL;
+                    tail = NULL;
+                }
+                return;
+            }
+            
+        }
+        else {
+            return;
+        }
         
     }
     void clear() {
-        
+        while(size() > 0){
+            Node* n = head;
+            head = head->next;
+            delete n;
+        }
+        head = NULL;
+        tail = NULL;
     }
     T at(int index) {
-        T value;
-        return value;
+        if (index < 0) {
+            throw out_of_range("under");
+        }
+        else{
+            currentIndex = head;
+            for (int i = 0; i <= index; i++) {
+                if (currentIndex == NULL) {
+                    throw out_of_range("OVER");
+                }
+                else if (i == index) {
+                    break;
+                }
+                currentIndex = currentIndex->next;
+            }
+            return currentIndex->value;
+        }
+        
     }
     int size() {
+        int listSize = 0;
+        currentIndex = head;
+        while(currentIndex != nullptr) {
+            ++listSize;
+            currentIndex = currentIndex->next;
+        }
         return listSize;
     }
     string toString() {
+        string list;
+        ostringstream output;
         
-        return "";
+        currentIndex = head;
+        if (currentIndex == NULL) {
+            return list;
+        }
+        else {
+            while (currentIndex != NULL) {
+                output << currentIndex->value;
+                currentIndex = currentIndex->next;
+                if(currentIndex == NULL){
+                    
+                }
+                else {
+                    output << " ";
+                }
+            }
+            
+            list = output.str();
+            return list;
+        }
     }
     bool checkForDuplicate(T value) {
             currentIndex = head;
@@ -119,10 +203,9 @@ protected:
     
     
 private:
-    Node* head;
-    Node* tail;
-    Node* currentIndex;
-    int listSize;
+    Node* head = nullptr;
+    Node* tail = nullptr;
+    Node* currentIndex = nullptr;
 };
 
 #endif /* LinkedList_h */
